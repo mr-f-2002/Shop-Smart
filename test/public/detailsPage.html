@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="detailsPage.css" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="video-container">
+    <video autoplay loop muted playsinline poster>
+      <source src="./images/cubeb.mp4" type="video/mp4" />
+    </video>
+  </div>
+  <section>
+    <div class="left">
+      <h1 class="name">The Tumbler</h1>
+      <div class="description">
+        <p>This is tumbler to drink any liquid. This is
+          a great way to enjoy your sips and make your day little better!!!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic repellat sapiente molestias maiores fugiat illum,
+          iste corrupti dolore placeat est deserunt consequatur ducimus id! Voluptatum.</p>
+        </p>
+      </div>
+    </div>
+    <div class="right">
+      <div class="map" id="map">
+        <iframe id="map-frame" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="chat-cart">
+        <div class="chat">
+          <img src="./images/chat3.png" alt="">
+        </div>
+        <div class="cart">
+          <img src="./images/cart2.png" alt="">
+        </div>
+      </div>
+
+      <div class="information">
+        <p class="price">Price: <span>1250৳</span></p>
+        <p class="condition">Condition: <span>New</span></p>
+        <p class="carted">Carted: <span>3x</span></p>
+        </p>
+      </div>
+    </div>
+
+
+    <div class="image">
+      <img class="product-image" src="./images/1694278125714" alt="">
+    </div>
+  </section>
+
+
+  <script>
+    var productid = localStorage.getItem('productid')
+    console.log(productid);
+
+    fetch("/api/cartnum?condition=" + productid)
+      .then((response) => response.json())
+      .then((products) => {
+        products.forEach((product) => {
+          var carted = 66;
+          carted = product.num;
+          document.querySelector('.carted').innerHTML = `Carted: <span>${carted}x<span>`;
+        });
+        console.log(products);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+
+    fetch("/details?condition=" + productid)
+      .then((response) => response.json())
+      .then((products) => {
+        products.forEach((product) => {
+          const userid = product.userid;
+          const productid = product.productid;
+          const name = product.productname;
+          const description = product.description;
+          const image = `./images/${productid}`;
+          const lat = product.latitude;
+          const long = product.longitude;
+          const price = product.price;
+          const condition = (product.condition == 1) ? 'New' : 'Used';
+
+
+          document.querySelector('.name').innerHTML = name;
+          document.querySelector('.description p').innerHTML = description;
+          document.querySelector('.price').innerHTML = `Price: <span>${price}৳<span>`;
+          document.querySelector('.condition').innerHTML = `Condition: <span>${condition}<span>`;
+          document.querySelector('.product-image').src = image;
+          var source = `https://www.google.com/maps?q=${lat}, ${long}+&output=embed`;
+          var map = document.getElementById('map-frame');
+          map.src = source;
+
+          document.querySelector(".chat").addEventListener("click", (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            if (localStorage.getItem("email") == null) {
+              alert("Please login to add to cart");
+            } else {
+              const productid = localStorage.getItem("productid");
+
+              // Make a request to the API to get the other user's ID
+              fetch(`/getOtherUserId/${productid}`)
+                .then((response) => response.json())
+                .then((data) => {
+                  const otherUserId = data.otherUserId;
+                  console.log(otherUserId);
+                  // Prepare the message data
+                  const messageData = {
+                    userId: localStorage.getItem("userid"),
+                    otherUserId: otherUserId,
+                    message: `${name}`, // Set this to null or an empty message
+                  };
+
+                  // Send the null message to the server
+                  fetch("/sendMessage", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(messageData),
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      console.log(data.message); // Log the server response
+
+                      // Redirect to the chat.html page
+                      const productName = document.querySelector(".name").textContent;
+
+                      // setTimeout(function () {}, 5000);
+                      window.location.href = "./chat.html";
+                    })
+
+                    .catch((error) => {
+                      console.error("Error sending null message:", error);
+                    });
+                })
+                .catch((error) => {
+                  console.error("Error getting other user ID:", error);
+                });
+            }
+          });
+
+          document.querySelector(".cart").addEventListener("click", (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            if (localStorage.getItem("email") == null) {
+              alert("Please login to add to cart");
+            } else {
+              const userid = localStorage.getItem("userid");
+              const apiUrl = `/addtocart/${userid}/${productid}`;
+
+              fetch(apiUrl, {
+                method: "POST",
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  alert("Item added to cart");
+                  loadCartNumber();
+                })
+                .catch((error) => {
+                  console.error("Error adding to cart:", error);
+                  // Handle the error, e.g., display an error message to the user
+                });
+            }
+          });
+
+
+        });
+        console.log(products);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+
+
+    function chat() {
+      const productName = document.querySelector('.name').textContent;
+      window.location.href = './chat.html';
+      localStorage.setItem("productname", productName)
+      console.log(productName);
+      console.log("chat page loading");
+    }
+
+
+
+
+
+  </script>
+</body>
+
+</html>

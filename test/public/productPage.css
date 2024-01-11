@@ -1,0 +1,498 @@
+:root {
+  --primary-color: #fe8616;
+  --text-color: aliceblue;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-size: cover;
+}
+#video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+#video-container video {
+  width: 100%;
+}
+.sec1 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header {
+  width: 90%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-self: center;
+  padding: 5px 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  transform: translateY(-15px);
+}
+
+.header .logo {
+  width: 8%;
+  height: 65px;
+  background-color: #fe8616;
+  border-radius: 10px;
+}
+
+.header .logo img {
+  width: 90%;
+}
+
+.home {
+  color: #fe8616;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.home:hover {
+  padding-bottom: 2px;
+  border-bottom: 2px solid #fe8616;
+  cursor: pointer;
+}
+
+.header .menu {
+    width: 25%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.chat {
+  margin-right: 10px;
+}
+.chat button {
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  cursor: pointer; /* Optional: Set cursor to pointer for better usability */
+}
+
+.chat img {
+  /* width: 60%; */
+  height: auto;
+  border-radius: 10px;
+  height: 30px;
+  width: 30px;
+  object-fit: cover;
+}
+.chat:hover {
+  cursor: pointer;
+}
+.cart img {
+  height: 30px;
+  width: 30px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.cart button {
+  background: none;
+  border: none;
+  position: relative;
+}
+
+.cart label {
+  color: rgb(0, 0, 0);
+  padding: 2px;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.searchGroup {
+  display: flex;
+  flex-grow: 1; /*change here*/
+  /* move the search group more to the left */
+  position: relative;
+  left: -2vw;
+}
+.searchButton {
+  border-radius: 0 25px 25px 0;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+.searchBox {
+  border-radius: 25px 0 0 25px;
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 5px 15px;
+  flex-grow: 1;
+  width: 10vw;
+  /*change here*/
+  /* increase width here */
+}
+.searchBox:focus {
+  outline: none;
+}
+.searchButton img {
+  width: 15px;
+}
+
+/* Add your CSS class for the dropdown styling */
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 94%;
+  display: none;
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  padding: 2px 5px;
+}
+
+.dropdown-item:hover {
+  font-weight: bold;
+}
+.profilePic img {
+  height: 40px;
+  border-radius: 50%;
+}
+.dropdown {
+  position: absolute;
+  width: 200px;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  top: 70px;
+  right: 70px;
+  border-radius: 10px;
+  display: none;
+  align-self: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 50;
+}
+.dropdown img {
+  width: 80%;
+  display: block;
+  margin: 2% auto;
+}
+.dropdown .username {
+  text-align: center;
+  color: aliceblue;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.dropdown .email {
+  text-align: center;
+  color: aliceblue;
+  font-size: 12px;
+}
+.dropdown .login,
+.dropdown .signup {
+  text-align: center;
+  color: aliceblue;
+  font-size: 12px;
+  padding: 6px;
+  margin: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+  /* display: none; */
+}
+.logout {
+  text-align: center;
+  color: aliceblue;
+  font-size: 12px;
+  padding: 6px;
+  margin: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+  /* display: none; */
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination li {
+  margin: 5px;
+}
+
+.pagination a {
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.3s, border 0.3s;
+}
+
+.pagination a:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: scale(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.pagination .active {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.centered-section {
+  text-align: center;
+  padding: 40px 0;
+  width: 100%;
+}
+
+.grid-container {
+  display: grid;
+  width: 70%;
+  margin: 0 auto;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-item {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  text-align: left;
+  width: 10em;
+  height: 14em;
+  background-color: rgba(33, 33, 33, 0.8);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  color: rgb(213, 218, 222);
+}
+.grid-item .cart {
+  width: 25px;
+  height: 25px;
+  background-color: #333;
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.grid-item .cart:hover {
+  transform: translateY(-40%);
+}
+.grid-item .like-button {
+  width: 25px;
+  height: 20px;
+  background-color: #333;
+  position: absolute;
+  bottom: 100px; /* Adjust this value to your preference */
+  right: 120px; /* Adjust this value to your preference */
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+}
+
+/* Styles for the unclicked state (empty heart) */
+.like-button i.far.fa-heart {
+  color: #fff; /* Color for unclicked state */
+}
+
+/* Styles for the clicked state (filled heart) */
+.like-button i.fas.fa-heart {
+  color: red; /* Color for clicked state */
+}
+
+.like-counter {
+  /* padding-left: 10px; */
+  /* right: 50px; */
+  /* transform: scale(0.1); */
+  font-size: smaller;
+  transform: translate(-0px, 5px);
+}
+.grid-item img {
+  height: 50%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.grid-item .name {
+  font-size: 18px;
+  margin: 2%;
+  margin-top: 8%;
+  padding: 0;
+  max-height: 10%;
+  overflow: hidden;
+  font-weight: 600;
+  color: #fe8616;
+}
+
+.grid-item .description {
+  font-size: 12px;
+  margin: 2%;
+  font-weight: 100;
+  max-height: 19%;
+  overflow: hidden;
+}
+
+.grid-item .price {
+  font-size: 14px;
+  margin: 2%;
+}
+.grid-item span {
+  font-size: 16px;
+  color: #fe8616;
+}
+
+.grid-item .condition {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #333;
+  border-radius: 5px 0 0 5px;
+  padding-left: 5px;
+}
+
+.grid-section {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.grid-section .header {
+  width: 100%;
+  text-align: center;
+}
+
+.addProduct {
+  width: 150px;
+  height: 60px;
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  background-color: red;
+  border-radius: 10px 0 0 10px;
+}
+.addProduct img {
+  height: 100%;
+  width: auto;
+}
+
+.filters {
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -305px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 1%;
+  border-radius: 10px;
+  transition: 0.2s ease-in-out;
+  z-index: 500;
+  backdrop-filter: blur(50px);
+}
+.locContain {
+  width: 90%;
+  display: block;
+  margin: auto;
+}
+.locContain input,
+.locContain select,
+.locContain p {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(92, 92, 92, 0.5); /* Adjust opacity as needed */
+  color: #333;
+  font-size: 16px;
+  outline: none;
+  transition: background-color 0.3s ease;
+  color: aliceblue;
+}
+.locContain input {
+  width: 93%;
+}
+.priceBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.priceBox #minPrice,
+.priceBox #maxPrice {
+  width: 40%;
+}
+
+/* Hover effect for input fields */
+.locContain input:hover,
+.locContain select:hover {
+  background-color: rgba(92, 92, 92, 0.7); /* Adjust opacity as needed */
+}
+
+/* Focus effect for input fields */
+.locContain input:focus,
+.locContain select:focus {
+  background-color: rgba(92, 92, 92, 0.9); /* Adjust opacity as needed */
+}
+.locContain label {
+  color: aliceblue;
+  padding-bottom: 10px;
+}
+.buttonGrp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.locContain button {
+  width: 48%;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #fe8616;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.location button:hover {
+  background-color: #fe8616d0;
+}
+.location button:active {
+  background-color: #fe861695;
+}
+.arrowBtn {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #fe8616;
+  padding: 10px;
+}
+.arrowBtn img {
+  width: 100%;
+  height: auto;
+}

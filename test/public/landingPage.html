@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="landingPage.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="sec1 ss">
+    <video autoplay loop muted playsinline poster="" class="ani3d" id="bgVideo">
+      <source src="./images/cubeb.mp4" type="video/mp4" />
+    </video>
+    <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.67890!2d-77.1234567!3d38.9876543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7e12eabcf2c2f%3A0x6a3d40a07f098f1a!2sYour+Location!5e0!3m2!1sen!2sus!4v1234567890123" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe> -->
+    <div class="header">
+      <a class="logo" href="landingPage.html">
+        <img src="./images/logo.png" alt="logo" />
+      </a>
+
+      <div class="menu">
+        <!-- <a class="home" onclick="toggleColor()">Home</a> -->
+        <div class="searchGroup">
+          <input type="search" class="searchBox" placeholder="search" />
+          <div class="searchButton" onclick="search()">
+            <img src="./images/search.png" alt="" />
+          </div>
+        </div>
+        <div class="chat">
+            <img src="./images/chat.png" alt="" />
+        </div>
+        <div class="cart">
+          <button>
+            <label for="">-</label>
+            <img src="./images/cart.png" alt="" />
+          </button>
+        </div>
+        <div class="profilePic">
+          <img src="./images/profile.png" alt="profile" id="profilePic" onclick="toggleDropdown()" />
+        </div>
+      </div>
+      
+    </div>
+    <div class="dropdown" id="dropdown">
+      <img src="./images/profile.png" alt="profile" class="profilePic" id="profilePicD" />
+      <p class="username" id="username">Guest User</p>
+      <p class="email" id="email"></p>
+      <a href="./login.html" class="login" id="login">Log In</a>
+      <a href="./signup.html" class="signup" id="signup">Sign Up</a>
+      <a href="./profileman.html" class="signup" id="profileman">Manage Profile</a>
+      <a href="./landingPage.html" class="signup" id="logout">Log Out</a>
+    </div>
+
+    <div class="location" id="editForm">
+      <div class="locContain">
+        <label for="division">Division:</label><br />
+        <select id="division" onchange="loadDistricts()">
+          <option value=""></option>
+          <option value="Barisal">Barisal</option>
+          <option value="Chattagram">Chittagong</option>
+          <option value="Dhaka">Dhaka</option>
+          <option value="Khulna">Khulna</option>
+          <option value="Mymensingh">Mymensingh</option>
+          <option value="Rajshahi">Rajshahi</option>
+          <option value="Rangpur">Rangpur</option>
+          <option value="Sylhet">Sylhet</option>
+          <!-- Add more division options as needed -->
+        </select><br />
+
+        <label for="district">District:</label><br />
+        <select id="district" onclick="loadSubdistricts()">
+          <option value=""></option>
+          <!-- Add more district options as needed -->
+        </select><br />
+
+        <label for="subdistrict">Subdistrict:</label><br />
+        <select id="subdistrict">
+          <option value=""></option>
+          <!-- Add more subdistrict options as needed -->
+        </select><br />
+        <button type="submit" id="updateBtn" onclick="updateLoc()">Update</button>
+        <button id="resetBtn" onclick="resetLoc()">Reset</button>
+      </div>
+    </div>
+
+
+    <div class="firstsec">
+      <div class="left">
+        <div class="slide-show">
+          <div class="slide"><img src="./images/p1.png" alt=""></div>
+          <div class="slide"><img src="./images/p2.png" alt=""></div>
+          <div class="slide"><img src="./images/p3.png" alt=""></div>
+          <div class="slide"><img src="./images/p4.png" alt=""></div>
+          <div class="slide"><img src="./images/p5.png" alt=""></div>
+          <div class="slide"><img src="./images/p6.png" alt=""></div>
+          <div class="slide"><img src="./images/p7.png" alt=""></div>
+          <div class="slide"><img src="./images/p8.png" alt=""></div>
+          <div class="slide"><img src="./images/p9.png" alt=""></div>
+          <div class="slide"><img src="./images/p10.png" alt=""></div>
+          <div class="slide"><img src="./images/p11.png" alt=""></div>
+          <div class="slide"><img src="./images/p12.png" alt=""></div>
+          <div class="slide"><img src="./images/p13.png" alt=""></div>
+          <div class="slide"><img src="./images/p14.png" alt=""></div>
+          <div class="slide"><img src="./images/p15.png" alt=""></div>
+          <div class="slide"><img src="./images/p16.png" alt=""></div>
+          <div class="slide"><img src="./images/p17.png" alt=""></div>
+          <div class="slide"><img src="./images/p18.png" alt=""></div>
+          <div class="slide"><img src="./images/p19.png" alt=""></div>
+          <div class="slide"><img src="./images/p20.png" alt=""></div>
+          <div class="slide"><img src="./images/p21.png" alt=""></div>
+        </div>
+      </div>
+      <div class="right">
+        <h1>Shop Smart</h1>
+        <p id="demo2"></p>
+        <button style="text-decoration: none; color: black; cursor:pointer" onclick="Explore()">Explore</button>
+        <div class="location-text">
+          <p id="loc-text">Board Bazar, Dhaka</p>
+          <div id="edit-location" onclick="editLoc()" style="cursor: pointer;"><img src="./images/edit.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="addProduct" id="addProduct">
+      <a href="./addProductPage.html"> <img src="./images/addProductLogo.png" alt="" /></a>
+    </div>
+
+  </div>
+  <div class="s2 ss">
+    <h1 style="
+          text-align: center;
+          color: aliceblue;
+          transform: translateY(-21px);
+        ">
+      Recent Products
+    </h1>
+    <p style="
+          text-align: center;
+          color: aliceblue;
+          transform: translateY(-21px);
+        ">
+      Check out the most recent products around you!
+    </p>
+    <div class="catContain" id="catContain">
+
+    </div>
+  </div>
+  <section class="s3 ss" id="categorie">
+    <h1>Check Out Our Top Category</h1>
+    <div class="grid">
+      <div class="c1" onclick="searchCategory('Electronics-and-Appliances')">
+        <p>Electronics and Appliances</p>
+        <img src="./images/Electronics and Appliances.gif" alt="1" />
+      </div>
+      <div class="c2" onclick="searchCategory('Clothing-and-Accessories')">
+        <p>Clothing and Accessories</p>
+        <img src="./images/Clothing and Accessories.gif" alt="2" />
+      </div>
+      <div class="c3" onclick="searchCategory('DIY-Arts-and-Crufts')">
+        <p>DIY, Arts and Crufts</p>
+        <img src="./images/Arts and Crufts.gif" alt="3" />
+      </div>
+      <div class="c4" onclick="searchCategory('Health-and-Beauty-Products')">
+        <p>Health and Beauty Products</p>
+        <img src="./images/Health and Beauty.gif" alt="4" />
+      </div>
+      <div class="c5" onclick="searchCategory('Furniture-and-Home-decor')">
+        <p>Furniture and Home decor</p>
+        <img src="./images/Furniture and Home decor.gif" alt="5" />
+      </div>
+      <div class="c6" onclick="searchCategory('Grocaries')">
+        <p>Groceries</p>
+        <img src="./images/Grocaries.gif" alt="6" />
+      </div>
+      <div class="c7" onclick="searchCategory('Toys-and-Games')">
+        <p>Toys and Games</p>
+        <img src="./images/Toys and Games.gif" alt="7" />
+      </div>
+      <div class="c8" onclick="searchCategory('Vehicles-and-Transportations')">
+        <p>Vehicles and Transportations</p>
+        <img src="./images/Vehicles and Transportations.gif" alt="8" />
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <h6>About</h6>
+          <p class="text-justify">Welcome to <i>SHOPSMART</i>, where we're dedicated to deliver exceptional shopping
+            experiences. We're committed
+            to being the best in the business, ensuring each interaction with our platform surpasses your expectations.
+            At SHOPSMART, trust and
+            security are paramount. Our focus is on enhancing your shopping and selling experiences through a range of
+            top-notch facilities.
+            Choose SHOPSMART and enjoy a shopping journey that promises excellence and satisfaction.
+          </p>
+        </div>
+
+        <div class="col-xs-6 col-md-3">
+          <h6>Categories</h6>
+          <ul class="footer-links">
+            <li><a href="#">Electronics and Appliances</a></li>
+            <li><a href="#">Clothing and Accessories</a></li>
+            <li><a href="#">DIY, Arts and Crufts</a></li>
+            <li><a href="#">Vehicles and Transportations</a></li>
+            <li><a href="#">Furniture and Home decor</a></li>
+            <li><a href="#">Toys and Games</a></li>
+            <li><a href="#">Health and Beauty Products</a></li>
+            <li><a href="#">Groceries</a></li>
+          </ul>
+        </div>
+
+        <div class="col-xs-6 col-md-3">
+          <h6>Quick Links</h6>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Contribute</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Sitemap</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p class="copyright-text">Copyright &copy; 2017 All Rights Reserved by
+            <a href="#">ShopSmart</a>.
+          </p>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <ul class="social-icons">
+            <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
+            <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <section class="s4">
+
+  </section>
+  <section class="s5"></section>
+  <section class="s6"></section>
+
+  <script src="landingPage.js"></script>
+</body>
+
+</html>

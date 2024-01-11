@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="productPage.css" />
+  <title>Document</title>
+  <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      crossorigin="anonymous"
+    />
+</head>
+
+<body>
+  <div id="video-container">
+    <video autoplay loop muted playsinline poster>
+      <source src="./images/cubeb.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <div class="sec1">
+    <div class="header">
+      <a class="logo" href="landingPage.html">
+        <img src="./images/logo.png" alt="logo" />
+      </a>
+
+      <div class="menu">
+        <!-- <a class="home" onclick="toggleColor()">Home</a> -->
+        <div class="searchGroup">
+          <input type="search" class="searchBox" placeholder="search" />
+          <div class="searchButton" onclick="search()">
+            <img src="./images/search.png" alt="" />
+          </div>
+        </div>
+        <div class="chat">
+            <img src="./images/chat.png" alt="" />
+        </div>
+        <div class="cart">
+          <button>
+            <label for="">-</label>
+            <img src="./images/cart.png" alt="" />
+          </button>
+        </div>
+        <div class="profilePic">
+          <img src="./images/profile.png" alt="profile" id="profilePic" onclick="toggleDropdown()" />
+        </div>
+      </div>
+
+    </div>
+    <div class="dropdown" id="dropdown">
+      <img src="./images/profile.png" alt="profile" class="profilePic" id="profilePicD" />
+      <p class="username" id="username">Guest User</p>
+      <p class="email" id="email"></p>
+      <a href="./login.html" class="login" id="login">Log In</a>
+      <a href="./signup.html" class="signup" id="signup">Sign Up</a>
+      <a href="./profileman.html" class="signup" id="profileman">Manage Profile</a>
+      <a href="./landingPage.html" class="signup" id="logout">Log Out</a>
+    </div>
+  </div>
+
+  <form id="filterForm">
+    <div class="filters" id="filters">
+      <div class="locContain" id="filterDiv">
+        <div class="arrowBtn" onclick="toggleFilter()">
+          <img id="sidePic" src="./images/rArrow.png" alt="right arrow" />
+        </div>
+        <label for="price">Price:</label>
+        <div class="priceBox">
+          <input type="number" id="minPrice" placeholder="Min 0 " min="0">
+          <input type="number" id="maxPrice" placeholder="Max 10000" min="0">
+        </div>
+        <label for="radius">Radius (in km):</label><br />
+        <input type="number" id="radius" name="radius" min="1" value="5" /><br />
+        <label for="condition">Product condition:</label><br />
+        <select id="condition">
+          <option value="1 OR 2"></option>
+          <option value="1">New</option>
+          <option value="2">Used</option>
+        </select>
+        <br />
+        <div class="buttonGrp">
+          <button type="Reset" id="resetBtn">Reset</button>
+          <button type="submit" id="updateBtn" onclick="toggleFilter()">Apply</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div style="display: block; width: 90%; margin: 5px 5%; border-radius: 10px">
+    <section class="centered-section">
+      <div class="grid-container">
+
+      </div>
+    </section>
+    <ul class="pagination" style="display: none;">
+      <li><a href="#" class="prev">Previous</a></li>
+      <li><a href="#" class="page active">1</a></li>
+      <li><a href="#" class="page">2</a></li>
+      <li><a href="#" class="page">3</a></li>
+      <li><a href="#" class="page">4</a></li>
+      <li><a href="#" class="page">5</a></li>
+      <li><a href="#" class="next">Next</a></li>
+    </ul>
+  </div>
+
+  <script src="./productPage.js"></script>
+</body>
+
+</html>

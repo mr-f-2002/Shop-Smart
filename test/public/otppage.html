@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Send OTP</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background: url(https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFja2dyb3VuZCUyMGJsb2d8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80);
+        background-size: cover;
+      }
+
+      .glass-container {
+        width: 400px;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .glass-container h2 {
+        text-align: center;
+        padding-top: 40px;
+        color: #fff;
+      }
+
+      .glass-container .container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .glass-container .container form {
+        width: 300px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .glass-container .container form input {
+        width: 100%;
+        height: 40px;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        padding-left: 10px;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+      .glass-container .container form button {
+        width: 100%;
+        height: 40px;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        background: #fff;
+        color: #111;
+        font-weight: bold;
+      }
+
+      .glass-container .container form button:hover {
+        background: #111;
+        color: white;
+      }
+      .otpmessage {
+        margin-top: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #5c1b1b;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="glass-container">
+      <h2>Send OTP</h2>
+      <div class="container">
+        <form id="otpForm">
+          <input type="email" id="email" placeholder="Email" required />
+          <button type="submit">Send OTP</button>
+          <div class="otpmessage"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Include your JavaScript code for OTP sending here -->
+    <!-- ... -->
+  </body>
+  <script>
+    const otpForm = document.getElementById("otpForm");
+    const email = document.getElementById("email");
+    const otpmessage = document.querySelector(".otpmessage");
+
+    otpForm.addEventListener("submit", async (e) => {
+      console.log("checkpoint-1");
+      e.preventDefault();
+      const emailValue = email.value;
+
+      if (emailValue === "") {
+        otpmessage.innerHTML = "Please enter a valid email";
+        otpmessage.style.color = "red";
+        email.style.border = "1px solid red";
+        email.focus();
+        return false;
+      }
+      console.log("checkpoint-2");
+      try {
+        // Make a POST request to your Express server's OTP sending endpoint
+        console.log("checkpoint-3");
+        const response = await fetch('/send-otp', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+        console.log("checkpoint-4");
+        if (response.ok) {
+          // OTP sent successfully, redirect to the verification page
+          console.log("checkpoint-5");
+          otpmessage.innerHTML = "OTP sent successfully";
+          otpmessage.style.color = "black";
+          email.style.border = "1px solid green";
+          email.value = "";
+          email.focus();
+          window.location.href = "verifypage.html";
+        } else {
+          // OTP sending was not successful
+          console.log("checkpoint-6");
+          otpmessage.innerHTML = "OTP sending failed or email not valid";
+          otpmessage.style.color = "red";
+          email.style.border = "1px solid red";
+          email.focus();
+        }
+      } catch (error) {
+        console.log("checkpoint-7");
+        console.error("Error sending OTP:", error);
+        otpmessage.innerHTML = "Error sending OTP. Please try again later.";
+        otpmessage.style.color = "red";
+        email.style.border = "1px solid red";
+        email.focus();
+      }
+    });
+  </script>
+</html>

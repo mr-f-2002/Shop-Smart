@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #f9b17a;
+            --secondary-color: #cd844c;
+            --background-color: #424769;
+            --border-color: #2d3250;
+            --text-color: #ffffff;
+            --highlight-color: #676f9d;
+            --glass-bg-color: rgba(255, 255, 255, 0.1);
+            --glass-shadow-color: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000;
+        }
+
+        section {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(#000, var(--primary-color), #000);
+            animation: animate 5s linear infinite;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        section span {
+            position: relative;
+            display: block;
+            width: calc(6.25vw - 2px);
+            height: calc(6.25vw - 2px);
+            background: #181818;
+            z-index: 2;
+            transition: 1.5s;
+        }
+
+        section span:hover {
+            background: var(--primary-color);
+            transition: 0s;
+        }
+
+        section .signin {
+            position: absolute;
+            width: 400px;
+            background: #222;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 9);
+        }
+
+        section .signin .content {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        section .signin .content h2 {
+            font-size: 2em;
+            color: var(--primary-color);
+            text-transform: uppercase;
+        }
+
+        section .signin .content .form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        section .signin .content .form .inputBox {
+            position: relative;
+            width: 100%;
+        }
+
+        section .signin .content .form .inputBox input {
+            position: relative;
+            width: 100%;
+            background: #333;
+            border: none;
+            outline: none;
+            padding: 25px 10px 7.5px;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1em;
+        }
+
+        section .signin .content .form .inputBox i {
+            position: absolute;
+            left: 0;
+            padding: 15px 10px;
+            font-style: normal;
+            color: #aaa;
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        .signin .content .form .inputBox input:focus~i,
+        .signin .content .form .inputBox input:valid~i {
+            transform: translateY(-7.5px);
+            font-size: 0.8em;
+            color: #fff;
+        }
+
+        .signin .content .form .links {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signin .content .form .links a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .signin .content .form .links a:nth-child(2) {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .signin .content .form .inputBox input[type="submit"] {
+            padding: 10px;
+            background: var(--primary-color);
+            color: #000;
+            font-weight: 600;
+            font-size: 1.35em;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:active {
+            opacity: 0.6;
+        }
+
+        .strength-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .strength-bar div {
+            border-radius: 5px;
+            height: 5px;
+            margin: 2px;
+            width: 100%;
+        }
+
+        #signup-button {
+            padding: 10px;
+            background: var(--primary-color);
+            color: #000;
+            font-weight: 600;
+            font-size: 1.35em;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+        }
+
+        #signup-button:active {
+            opacity: 0.6;
+        }
+
+        @media (max-width: 900px) {
+            section span {
+                width: calc(10vw - 2px);
+                height: calc(10vw - 2px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            section span {
+                width: calc(20vw - 2px);
+                height: calc(20vw - 2px);
+            }
+        }
+    </style>
+</head>
+
+<body style="background-image: url('./images/land.jpg');">
+
+    <section>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+
+        <div class="signin">
+            <div class="content">
+                <h2>Sign Up</h2>
+                <form id="signup-form" class="form" enctype="multipart/form-data">
+                    <div class="inputBox">
+                        <input type="file" id="imageInput" accept="image/*" required>
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" id="name" required>
+                        <i>Name</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="email" id="email" required>
+                        <i>Email</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" id="password" required>
+                        <i>Password</i>
+                    </div>
+                    <div class="strength-bar">
+                        <div id="b1"></div>
+                        <div id="b2"></div>
+                        <div id="b3"></div>
+                        <div id="b4"></div>
+                    </div>
+                    <div style="color: var(--primary-color); font-weight: 600;" id="password-strength"></div>
+                    <button type="submit" id="signup-button">Sign Up</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div>
+            <h3>Preview</h3>
+            <img id="preview" style="width: 200px;" src="#" alt="Preview" />
+        </div>
+    </section>
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordInput = document.getElementById('password');
+            const passwordStrength = document.getElementById('password-strength');
+
+            passwordInput.addEventListener('input', checkPasswordStrength);
+
+            function checkPasswordStrength() {
+                const password = passwordInput.value;
+                const strength = calculatePasswordStrength(password);
+
+                let strengthText = '';
+                if (strength === 4) {
+                    strengthText = 'Strong';
+                    document.getElementById('b1').style.backgroundColor = '#1ff702';
+                    document.getElementById('b2').style.backgroundColor = '#1ff702';
+                    document.getElementById('b3').style.backgroundColor = '#1ff702';
+                    document.getElementById('b4').style.backgroundColor = '#1ff702';
+                } else if (strength === 3) {
+                    strengthText = 'Moderate';
+                    document.getElementById('b1').style.backgroundColor = '#c4b700';
+                    document.getElementById('b2').style.backgroundColor = '#c4b700';
+                    document.getElementById('b3').style.backgroundColor = '#c4b700';
+                    document.getElementById('b4').style.backgroundColor = 'transparent';
+                } else if (strength === 2) {
+                    strengthText = 'Moderate';
+                    document.getElementById('b1').style.backgroundColor = '#ffc003';
+                    document.getElementById('b2').style.backgroundColor = '#ffc003';
+                    document.getElementById('b3').style.backgroundColor = 'transparent';
+                    document.getElementById('b4').style.backgroundColor = 'transparent';
+                } else if (strength === 1) {
+                    strengthText = 'Weak';
+                    document.getElementById('b1').style.backgroundColor = '#ff4c38';
+                    document.getElementById('b2').style.backgroundColor = 'transparent';
+                    document.getElementById('b3').style.backgroundColor = 'transparent';
+                    document.getElementById('b4').style.backgroundColor = 'transparent';
+                } else {
+                    strengthText = '';
+                    document.getElementById('b1').style.backgroundColor = 'transparent';
+                    document.getElementById('b2').style.backgroundColor = 'transparent';
+                    document.getElementById('b3').style.backgroundColor = 'transparent';
+                    document.getElementById('b4').style.backgroundColor = 'transparent';
+                }
+
+                passwordStrength.textContent = `Password Strength: ${strengthText}`;
+            }
+
+            function calculatePasswordStrength(password) {
+                const hasLowercase = /[a-z]/.test(password);
+                const hasUppercase = /[A-Z]/.test(password);
+                const hasDigit = /\d/.test(password);
+                const hasSpecialChar = /[!@#$%^&*()_+{}\[\]:;<>,.?~\-]/.test(password);
+
+                let strength = 0;
+                if (hasLowercase) strength++;
+                if (hasUppercase) strength++;
+                if (hasDigit) strength++;
+                if (hasSpecialChar) strength++;
+
+                return strength;
+            }
+
+            function previewImage() {
+                let imageInput = document.getElementById("imageInput");
+                let preview = document.getElementById("preview");
+
+                if (imageInput.files && imageInput.files[0]) {
+                    let reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(imageInput.files[0]);
+                }
+            }
+
+            // Attach the previewImage function to the file input change event
+            document.getElementById('imageInput').addEventListener('change', previewImage);
+
+            // api end point to insert data
+            const signupForm = document.getElementById('signup-form');
+            const signupButton = document.getElementById('signup-button');
+            const previewButton = document.getElementById('preview-btn');
+
+            signupForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const username = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const userid = Date.now().toString();
+                var latitude = 0.00;
+                var longitude = 0.00;
+
+                if ("geolocation" in navigator) {
+                    navigator.geolocation.getCurrentPosition(async function (position) {
+                        latitude = position.coords.latitude;
+                        longitude = position.coords.longitude;
+
+                        const response = await fetch('http://localhost:3000/insert', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ userid, username, password, email, latitude, longitude })
+                        });
+                        const data = await response.json();
+                        console.log(data.message);
+
+
+                        const imageInput = document.getElementById('imageInput');
+                        const imageFile = imageInput.files[0];
+
+                        if (!imageFile) {
+                            console.error('No image selected');
+                            return;
+                        }
+
+                        const formData = new FormData();
+                        formData.append('image', imageFile);
+                        formData.append('userid', userid);
+
+                        fetch('/upload', {
+                            method: 'POST',
+                            body: formData,
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log('Image uploaded successfully');
+                                    // You can add code here to update the UI or perform additional actions
+                                } else {
+                                    console.error('Image upload failed');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+
+                        window.location.href = "./login.html";
+
+                    });
+                } else {
+
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

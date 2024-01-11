@@ -1,0 +1,92 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Database Data</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>Location Selection</h1>
+  <form>
+    Division:
+    <select id="division" onchange="populateDistricts()">
+      <option value="">Select Division</option>
+      <option value="Dhaka">Dhaka</option>
+      <option value="Barishal">Barishal</option>
+      <option value="Khulna">Khulna</option>
+      <option value="Rajshahi">Rajshahi</option>
+      <option value="Rangpur">Rangpur</option>
+      <option value="Mymensingh">Mymensingh</option>
+      <option value="Chittagong">Chittagong</option>
+      <option value="Sylhet">Sylhet</option>
+
+    </select><br><br>
+    District:
+    <select id="district" onchange="populateSubDistricts()">
+      <option value="">Select District</option>
+    </select><br><br>
+    Sub-District:
+    <select id="subdistrict">
+      <option value="">Select Sub-District</option>
+    </select><br><br>
+  </form>
+  <ul id="data-container"></ul>
+
+  <script>
+    const dataContainer = document.getElementById('data-container');
+
+    function populateDistricts(){
+      var divisionSelect = document.getElementById("division");
+      var districtSelect = document.getElementById("district");
+      var divisionValue = divisionSelect.value;
+
+      districtSelect.innerHTML = "";
+
+      if (divisionValue !== "") {
+        fetch(`/api/data?condition=${divisionValue}`)
+          .then(response => response.json())
+          .then(data => {
+            data.forEach(item => {
+              const option = document.createElement('option');
+              option.value = item.district;
+              option.text = item.district;
+              districtSelect.appendChild(option);
+            })
+          })
+          .catch(error=>{
+            console.error(error);
+          })
+      }
+    }
+
+    function populateSubDistricts(){
+      var districtSelect = document.getElementById("district"); 
+      var subDistrictSelect = document.getElementById("subdistrict")
+      var districtValue = districtSelect.value;
+      console.log(districtValue);
+
+      subDistrictSelect.innerHTML = "";
+
+      if (districtValue !== "") {
+        fetch(`/api/subdistrict?condition=${districtValue}`)
+          .then(response => response.json())
+          .then(data => {
+            data.forEach(item => {
+              const option = document.createElement('option');
+              option.value = item.subdistrict;
+              option.text = item.subdistrict;
+              subDistrictSelect.appendChild(option);
+            })
+          })
+      }
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>

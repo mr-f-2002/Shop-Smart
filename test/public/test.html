@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Location Selector</title>
+    <style>
+        select {
+            width: 200px;
+            padding: 5px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Location Selector</h1>
+    <label for="country">Country:</label>
+    <select id="country" onchange="updateStates()">
+        <option value="">Select a country</option>
+    </select>
+
+    <label for="state">State:</label>
+    <select id="state" onchange="updateCities()" disabled>
+        <option value="">Select a state</option>
+    </select>
+
+    <label for="city">City:</label>
+    <select id="city" disabled>
+        <option value="">Select a city</option>
+    </select>
+
+    <script>
+        // Define the API endpoint for location data
+        const apiUrl = "https://your-location-api-url.com";
+
+        const countrySelect = document.getElementById("country");
+        const stateSelect = document.getElementById("state");
+        const citySelect = document.getElementById("city");
+
+        // Function to fetch countries from the API
+        async function fetchCountries() {
+            try {
+                const response = await fetch(apiUrl + "/countries");
+                const data = await response.json();
+
+                // Populate the country dropdown
+                data.forEach((country) => {
+                    const option = document.createElement("option");
+                    option.value = country.code;
+                    option.textContent = country.name;
+                    countrySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error fetching countries:", error);
+            }
+        }
+
+        // Function to fetch states by country code from the API
+        async function fetchStates(countryCode) {
+            try {
+                const response = await fetch(apiUrl + `/states?country=${countryCode}`);
+                const data = await response.json();
+
+                // Populate the state dropdown
+                stateSelect.innerHTML = "<option value=''>Select a state</option>";
+                data.forEach((state) => {
+                    const option = document.createElement("option");
+                    option.value = state.code;
+                    option.textContent = state.name;
+                    stateSelect.appendChild(option);
+                });
+                stateSelect.disabled = false;
+            } catch (error) {
+                console.error("Error fetching states:", error);
+            }
+        }
+
+        // Function to fetch cities by state code from the API
+        async function fetchCities(stateCode) {
+            try {
+                const response = await fetch(apiUrl + `/cities?state=${stateCode}`);
+                const data = await response.json();
+
+                // Populate the city dropdown
+                citySelect.innerHTML = "<option value=''>Select a city</option>";
+                data.forEach((city) => {
+                    const option = document.createElement("option");
+                    option.value = city.code;
+                    option.textContent = city.name;
+                    citySelect.appendChild(option);
+                });
+                citySelect.disabled = false;
+            } catch (error) {
+                console.error("Error fetching cities:", error);
+            }
+        }
+
+        // Event listeners
+        countrySelect.addEventListener("change", () => {
+            const selectedCountry = countrySelect.value;
+            if (selectedCountry) {
+                fetchStates(selectedCountry);
+            } else {
+                stateSelect.disabled = true;
+                citySelect.disabled = true;
+            }
+        });
+
+        stateSelect.addEventListener("change", () => {
+            const selectedState = stateSelect.value;
+            if (selectedState) {
+                fetchCities(selectedState);
+            } else {
+                citySelect.disabled = true;
+            }
+        });
+
+        // Initialize the country dropdown by fetching data from the API
+        fetchCountries();
+    </script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="prof.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <div class="sec1 ss">
+    <video autoplay loop muted playsinline poster="" class="ani3d" id="bgVideo">
+      <source src="./images/cubeb.mp4" type="video/mp4" />
+    </video>
+    <div class="header">
+      <a class="logo" href="landingPage.html">
+        <img src="./images/logo.png" alt="logo" />
+      </a>
+      <div class="menu">
+        <a class="home">Profile Dashboard </a>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <div class="dropdown" id="dropdown">
+        <img src="./images/profile.png" alt="profile" class="profilePic" id="profilePicD" />
+        <div class="inputBox" id="cngimg" style="display: none;">
+          <input type="file" id="imageInput" accept="image/*" onchange="uploadImage()" />
+        </div>
+        <div>
+          <div class="form-group">
+            <input type="text" id="username" value="Ehsanul haque" class="disabled-input" disabled>
+          </div>
+          <div class="form-group">
+            <input type="email" id="email" value="ehsanm416@example.com" class="disabled-input" disabled>
+          </div>
+        </div>
+        <div id="totalinfo">
+          <h4 id="productCount">Total Products: 06</h4>
+          <h4 id="cartCount">Carted: 06</h4>
+          <h4 id="totprice">Total Purchases:</h4>
+          <h4 id="totcount">Total count:</h4>
+        </div>
+
+        <div class="button-group" id="cnggimg" style="display: none;">
+
+          <button onclick="showChangePasswordForm()">Change Password</button>
+
+        </div>
+        <div class="change-password-form hidden form-group" id="changePasswordForm">
+          <input type="password" id="oldPassword" placeholder="Old Password">
+          <input type="password" id="newPassword" placeholder="New Password">
+          <input type="password" id="confirmPassword" placeholder="Re-type Password">
+
+        </div>
+        <div class="sus" id="susmit" style="display: none;">
+          <button onclick="changePassword()" class="btn">Submit</button>
+        </div>
+        <div class="button-group">
+          <button onclick="editProfile()" class="btn" id="editBtn" style="margin-top: 20px;">Edit</button>
+          <button onclick="cancelEdit()" class="btn" id="cancelBtn" style="display:none">Cancel</button>
+          <button onclick="submitForm()" class="btn" id="submitBtn" style="display:none">Submit</button>
+        </div>
+      </div>
+
+      <div id="plotAndNoti">
+        <canvas id="scatterPlot"></canvas>
+        <h3 class="notiHeader">Notifications</h3>
+        <div class="notification"></div>
+      </div>
+
+      <div class="productWraper">
+        <h2>Products</h2>
+        <div class="products" id="products">
+          <!-- products will be dynamically fetched -->
+        </div>
+      </div>
+    </div>
+</body>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    userid = localStorage.getItem('userid');
+    function fetchData() {
+      fetch('/purchases/summary?condition=' + userid)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+
+          console.log(data);
+          const totalPurchasesElement = document.getElementById('totprice');
+          const totalCountElement = document.getElementById('totcount');
+          totalPurchasesElement.textContent = `Total Sales: ${data.totalPurchases || 0}`;
+          totalCountElement.textContent = `Revenue: ${data.totalPrices || 0}`;
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
+    fetchData();
+  });
+
+  var userid, username, password, email;
+  userid = localStorage.getItem('userid');
+  const notificationContainer = document.querySelector('.notification');
+
+  fetch("/userdetails?condition=" + userid)
+    .then((response) => response.json())
+    .then((value) => {
+      value.forEach((user) => {
+        username = user.username;
+        password = user.password;
+        email = user.email;
+        document.getElementById("username").value = username;
+        document.getElementById("email").value = email;
+        document.getElementById("profilePicD").src = `./images/${userid}`;
+        console.log(user)
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching products:", error);
+    });
+
+  fetch("/notifications?condition=" + userid)
+    .then((response) => response.json())
+    .then((notifications) => {
+      notifications.forEach((notification) => {
+        const text = document.createElement('p');
+        text.textContent = notification.message;
+        notificationContainer.appendChild(text);
+        console.log(notification);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching products:", error);
+    });
+
+  function loadCartNumber() {
+    const cartLabel = document.getElementById("cartCount");
+    // Check if the user is not logged in
+    if (localStorage.getItem("email") == null) {
+      cartLabel.innerHTML = "Carted: 0";
+    } else {
+      // Construct the URL with the userId as a query parameter
+      const userId = localStorage.getItem("userid");
+      const apiUrl = `/cartNumber/${userId}`;
+
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          cartLabel.innerHTML = `Carted: ${data.cartNumber}`;
+        })
+        .catch((error) => {
+          console.error("Error fetching cart number:", error);
+          // Handle the error, e.g., display an error message to the user
+        });
+    }
+  }
+  loadCartNumber();
+
+  // profile
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get the canvas element
+    var scatterCtx = document.getElementById('scatterPlot').getContext('2d');
+
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+    // Sample data for scatter plot
+    var scatterData = {
+      datasets: [{
+        label: 'Sales Summary',
+        data: [],
+        backgroundColor: '#fe8616',
+        borderWidth: 2,
+        borderColor: '#000000',
+        pointRadius: 4
+      }]
+    };
+
+
+    // Chart configuration for the scatter plot
+    var scatterOptions = {
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'day',
+            displayFormats: {
+              day: 'MMM dd'
+            }
+          },
+          position: 'bottom',
+          grid: {
+            color: '#333'
+          },
+          ticks: {
+            color: '#333'
+          }
+        },
+        y: {
+          type: 'linear',
+          position: 'left',
+          grid: {
+            color: '#333'
+          },
+          ticks: {
+            color: '#333'
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: '#333',
+            font: { weight: 'bold' }
+          }
+        }
+      }
+    };
+
+    // Create the scatter plot
+    var scatterPlot = new Chart(scatterCtx, {
+      type: 'line',
+      data: scatterData,
+      options: scatterOptions
+    });
+
+    userid = localStorage.getItem("userid");
+    console.log(`userid here is : ${userid}`);
+    fetch('/purchases/stats?condition=' + userid)
+      .then(response => {
+        console.log("Response status:", response.status);
+        return response.json();
+      })
+      .then(data => {
+        console.log("Fetched data:", data);
+
+        // Assuming data is an array of objects with purchaseDate and totalPrices properties
+        scatterPlot.data.datasets[0].data = data.map(entry => ({ x: new Date(entry.purchaseDate), y: entry.totalPrices }));
+        scatterPlot.update();  // Update the chart with new data
+        console.log('Updated scatter plot data:', scatterPlot.data.datasets[0].data);
+      })
+      .catch(error => {
+        console.error('Error fetching scatter plot data:', error);
+      });
+  });
+
+  function uploadImage() {
+    var input = document.getElementById('imageInput');
+    var image = document.getElementById('profilePicD');
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onloadend = function () {
+      image.src = reader.result;
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function editProfile() {
+    document.getElementById('username').classList.remove('disabled-input');
+    document.getElementById('username').classList.add('enabled-input');
+    document.getElementById('username').disabled = false;
+    document.getElementById("editBtn").style.display = 'none';
+    document.querySelector('.button-group button:nth-child(2)').style.display = 'inline'; // Show Cancel button
+    document.getElementById('cngimg').style.display = 'block';
+    document.getElementById('cnggimg').style.display = 'block';
+    document.getElementById('totalinfo').style.display = 'none';
+    document.getElementById('totcount').style.display = 'none';
+    document.getElementById('totprice').style.display = 'none';
+    document.querySelector('.button-group button:nth-child(3)').style.display = 'inline'; // Show Submit button
+  }
+
+  function cancelEdit() {
+    const un = document.getElementById('username');
+    un.value = username;
+    un.disabled = true;
+    const em = document.getElementById('email');
+    em.value = email;
+    em.disabled = true;
+    document.querySelector('.button-group button:nth-child(1)').style.display = 'inline';
+    document.querySelector('.button-group button:nth-child(2)').style.display = 'none';
+    //        document.getElementById('cancelbtn').style.display = 'none';              
+    document.querySelector('.button-group button:nth-child(3)').style.display = 'none';
+  }
+
+
+  function submitForm() {
+    var username = document.getElementById('username').value;
+    var email = document.getElementById('email').value;
+    const userdata = {
+      userid: userid,
+      username: username,
+      password: password,
+      email: email
+    };
+
+    fetch("http://localhost:3000/updateuser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userdata),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Server response:", data);
+        if (data.success) {
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+      });
+    console.log("Name: " + username);
+    console.log("Email: " + email);
+
+    localStorage.setItem("email", email);
+    localStorage.setItem("username", username);
+
+    document.querySelector('.button-group button:nth-child(1)').style.display = 'inline';
+    document.querySelector('.button-group button:nth-child(2)').style.display = 'none'; // Show Cancel button
+    document.querySelector('.button-group button:nth-child(3)').style.display = 'none';
+    location.reload();
+  }
+
+  function showChangePasswordForm() {
+    const changePasswordForm = document.getElementById("changePasswordForm");
+    changePasswordForm.classList.remove("hidden");
+    document.getElementById("susmit").style.display = "block";
+  }
+
+  function changePassword() {
+    const oldPassword = document.getElementById("oldPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (oldPassword !== password) {
+      alert("Old password is incorrect. Please try again.");
+      return;
+    }
+    if (!passwordRegex.test(newPassword)) {
+      alert("New password must be at least 8 characters long and include one uppercase letter, one lowercase letter, one number, and one special character.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      alert("New password and re-type password do not match. Please try again.");
+      return;
+    }
+    password = document.getElementById("newPassword").value;
+
+    const userdata = {
+      userid: userid,
+      username: username,
+      password: password,
+      email: email
+    };
+    fetch("http://localhost:3000/updateuser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userdata),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Server response:", data);
+        if (data.success) {
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+      });
+
+    const changePasswordForm = document.getElementById("changePasswordForm");
+    changePasswordForm.classList.add("hidden");
+
+    alert("Password changed successfully!");
+  }
+
+  const productContainer = document.getElementById("products");
+  fetch("/myproducts?condition=" + userid)
+    .then((response) => response.json())
+    .then((products) => {
+      document.getElementById("productCount").textContent = `Total products: ${products.length}`;
+      products.forEach((product) => {
+        const rowDiv = document.createElement("div");
+        rowDiv.classList.add("item");
+        const imageDiv = document.createElement("div");
+        imageDiv.classList.add("img");
+        imageDiv.innerHTML = `<img src="./images/${product.productid}" alt="${product.productname}">`;
+        const nameParagraph = document.createElement("p");
+        nameParagraph.classList.add("pname");
+        nameParagraph.textContent = product.productname;
+        const checkboxDiv = document.createElement("div");
+        checkboxDiv.classList.add("reserved");
+        checkboxDiv.innerHTML = `<input type="checkbox" class="${product.productid}" id="changeState" ${product.status ? "" : "checked"}>`;
+
+        const checkboxInput = checkboxDiv.querySelector("input");
+        checkboxInput.addEventListener("click", changeState);
+
+        const imageDiv2 = document.createElement("div");
+        imageDiv2.classList.add("img2");
+        imageDiv2.innerHTML = `<img src="./images/delete.png" class="${product.productid}" alt="${product.productname}">`;
+        const dltImg = imageDiv2.querySelector("img");
+        dltImg.addEventListener("click", deleteProduct);
+
+        const imageDiv3 = document.createElement("div");
+        imageDiv3.classList.add("img2");
+        imageDiv3.innerHTML = `<img src="./images/edit2.png" class="action-btn edit-btn ${product.productid}" alt="${product.productname}">`;
+        const editBtn = imageDiv3.querySelector("img");
+        editBtn.addEventListener("click", editProduct);
+
+        rowDiv.appendChild(imageDiv);
+        rowDiv.appendChild(nameParagraph);
+        rowDiv.appendChild(imageDiv3);
+        rowDiv.appendChild(checkboxDiv);
+        rowDiv.appendChild(imageDiv2);
+
+        productContainer.appendChild(rowDiv);
+
+      });
+      console.log(products);
+    })
+    .catch((error) => {
+      console.error("Error fetching products:", error);
+    });
+
+  function editProduct() {
+    // Assuming product.productid is used for identifying the specific product
+    const productId = this.classList[2]; // Assuming the third class is the product ID
+    const productDetailsUrl = `/editProduct.html?productId=${productId}`;
+
+    // Redirect to the addproduct.html page with the product ID
+    window.location.href = productDetailsUrl;
+  }
+
+  function changeState() {
+    const isChecked = this.checked;
+    const rowDiv = this.parentElement.parentElement; // Get the parent row div
+
+
+    if (isChecked) {
+      // set status 0 (reserved)
+      alert('Product state updated!')
+      const id = this.classList;
+      const userdata = {
+        pid: id
+      };
+      fetch("/updateState0", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userdata),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Server response:", data);
+          if (data.success) {
+          } else {
+          }
+        })
+        .catch((error) => {
+          console.error("Error adding product:", error);
+        });
+    } else {
+      // set status 1 (available)
+      alert('Product state updated!')
+      const id = this.classList;
+      const userdata = {
+        pid: id
+      };
+      fetch("/updateState1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userdata),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Server response:", data);
+          if (data.success) {
+          } else {
+          }
+        })
+        .catch((error) => {
+          console.error("Error adding product:", error);
+        });
+    }
+  }
+
+  function sold(id) {
+    const userdata = {
+      pid: id
+    };
+    console.log(userdata);
+    fetch("/soldproduct", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userdata),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Server response:", data);
+        if (data.success) {
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+      });
+  }
+
+  function deleted(id) {
+    const userdata = {
+      pid: id
+    };
+    console.log(userdata)
+    fetch("/deleteproduct", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userdata),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Server response:", data);
+        if (data.success) {
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+      });
+  }
+
+  function deleteProduct() {
+    const alertContainer = document.createElement('div');
+    alertContainer.classList.add("alertContainer")
+
+    const text = document.createElement('p');
+    text.textContent = "Reason for removing product?"
+    const buttonDiv = document.createElement('div');
+    const btn1 = document.createElement('button');
+    btn1.innerText = "Sold";
+    const btn2 = document.createElement('button');
+    btn2.innerText = "Deleted";
+    buttonDiv.appendChild(btn1);
+    buttonDiv.appendChild(btn2);
+    alertContainer.appendChild(text);
+    alertContainer.appendChild(buttonDiv);
+
+    btn1.addEventListener('click', () => {
+      console.log('product sold');
+      sold(this.classList);
+      deleted(this.classList);
+      location.reload();
+    })
+    btn2.addEventListener('click', () => {
+      console.log('product deleted');
+      deleted(this.classList);
+      location.reload();
+    })
+    document.body.appendChild(alertContainer);
+  }
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Product</title>
+  <link rel="stylesheet" href="addProduct.css" />
+</head>
+
+<body>
+  <div id="video-container">
+    <video autoplay loop muted playsinline poster="">
+      <source src="./images/cubeb.mp4" type="video/mp4" />
+    </video>
+  </div>
+  <section>
+    <div class="addproduct">
+      <div class="content">
+        <h2>Add Product</h2>
+        <form id="product-form" class="form" enctype="multipart/form-data">
+          <div class="inputBox">
+            <input type="file" id="imageInput" accept="image/*" required />
+          </div>
+          <div class="inputBox">
+            <input type="text" id="name" required />
+            <i>Product name</i>
+          </div>
+          <div class="inputBox">
+            <input type="text" id="description" required />
+            <i>Description</i>
+          </div>
+          <div class="inputBox">
+            <input type="number" id="price" required />
+            <i>Price in taka</i>
+          </div>
+          <div class="inputBox">
+            <select id="condition" required>
+              <option value=""></option>
+              <option value="1">New</option>
+              <option value="2">Used</option>
+            </select>
+            <i>Product Condition</i>
+          </div>
+          <div class="inputBox" id="opt" style="display: none;">
+            <input type="text" id="used" />
+            <i>Used for (eg. 2 months)</i>
+          </div>
+          <div class="inputBox">
+            <select type="text" id="category" required>
+              <option value=""></option>
+              <option value="Electronics-and-Appliances">Electronics and Appliances</option>
+              <option value="Clothing-and-Accessories">Clothing and Accessories</option>
+              <option value="DIY-Arts-and-Crufts">DIY, Arts and Crufts</option>
+              <option value="Vehicles-and-Transportations">Vehicles and Transportations</option>
+              <option value="Furniture-and-Home-decor">Furniture and Home decor</option>
+              <option value="Toys-and-Games">Toys and Games</option>
+              <option value="Health-and-Beauty-Products">Health and Beauty Products</option>
+              <option value="Grocaries">Grocaries</option>
+            </select>
+            <i>Select a relevant category</i>
+          </div>
+
+          <div class="inputBox">
+            <input class="tag-input" type="text" />
+            <i>Add tags (separated by comma)</i>
+            <button type="button" class="addtag">add</button>
+            <!-- add tag -->
+          </div>
+          <div id="tagscontainer" class="tagscontainer"></div>
+          <button type="submit" class="add-button" id="add-button">
+            Add Product
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="preview-section">
+      <h3>Preview</h3>
+      <img id="preview" style="width: 200px" src="#" alt="Preview" />
+    </div>
+  </section>
+</body>
+<script>
+  // Event listener on imageInput upon image insert
+  const imageInput = document.getElementById("imageInput");
+  const preview = document.getElementById("preview");
+
+  imageInput.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.addEventListener("load", function () {
+        preview.setAttribute("src", this.result);
+      });
+
+      reader.readAsDataURL(file);
+    } else {
+      preview.setAttribute("src", "placeholder.png");
+    }
+  });
+
+  function createtagdiv(tag) {
+    const tagdiv = document.createElement("div");
+    tagdiv.classList.add("tag");
+    tagdiv.innerHTML = tag;
+    tagdiv.style.color = "black";
+    tagdiv.style.fontWeight = "700";
+
+    // Cancel button
+    const cancelbtn = document.createElement("button");
+    cancelbtn.classList.add("cancelbtn");
+    const cross = document.createElement("img");
+    cross.src = "./images/cross.png"
+    cancelbtn.appendChild(cross);
+    //cancelbtn.innerHTML = "X";
+
+    // cancelbtn.style.backgroundColor = "transparent";
+    // cancelbtn.style.border = "none";
+    // cancelbtn.style.marginLeft = "2px";
+
+    cancelbtn.addEventListener("click", function () {
+      tagdiv.remove();
+    });
+
+    tagdiv.appendChild(cancelbtn);
+    return tagdiv;
+  }
+
+  // Add tag divs to the tag container upon clicking the "Add" button
+  const taginput = document.querySelector(".tag-input");
+  const tagcontainer = document.querySelector(".tagscontainer");
+  const addtgbtn = document.querySelector(".addtag");
+
+  addtgbtn.addEventListener("click", function () {
+    document.getElementById("tagscontainer").style.display = "flex";
+    const tags = taginput.value.split(",");
+
+    // Remove leading and trailing spaces from tags and filter out empty strings
+    const cleanedTags = tags
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== "");
+
+    const uniqueTags = new Set(); // Use a set to store unique tags
+
+    cleanedTags.forEach((tag) => {
+      if (!uniqueTags.has(tag)) {
+        const tagdiv = createtagdiv(tag);
+        tagcontainer.appendChild(tagdiv);
+        uniqueTags.add(tag); // Add the tag to the set to mark it as encountered
+      }
+    });
+    taginput.value = "";
+  });
+
+
+  const conditionBtn = document.getElementById('condition');
+  conditionBtn.addEventListener('change', function () {
+    const used = document.getElementById('opt')
+    if (this.value == 2) {
+      used.style.display = 'block';
+    } else {
+      used.style.display = 'none';
+    }
+  })
+
+  // Add product to the database with an API call
+  const addproductform = document.getElementById("product-form");
+  const addproductbtn = document.getElementById("add-button");
+
+  addproductform.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    var description = document.getElementById("description").value;
+    const price = parseFloat(document.getElementById("price").value);
+    const condition = parseInt(document.getElementById("condition").value);
+    if (condition == 2) {
+      description += "<br>(used for: " + document.getElementById("used").value + ")";
+    }
+    const category = document.getElementById("category").value;
+    const tags = Array.from(document.querySelectorAll(".tag")).map(
+      (tagdiv) => tagdiv.textContent // Use textContent to get the text without HTML
+    );
+    const productid = Date.now();
+
+    // Create a data object to send to the server
+    const productData = {
+      productid: productid,
+      userid: localStorage.getItem("userid"),
+      productname: name,
+      description: description,
+      price: price,
+      condition: condition,
+      status: 1,
+      category: category,
+      latitude: localStorage.getItem("latitude"),
+      longitude: localStorage.getItem("longitude"),
+    };
+
+    fetch("http://localhost:3000/insertproduct", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Server response:", data);
+        if (data.success) {
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+      });
+
+    //
+    const imageInput = document.getElementById('imageInput');
+    const imageFile = imageInput.files[0];
+    if (!imageFile) {
+      console.error('No image selected');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    formData.append('userid', productid);
+
+    fetch('/upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log('Image uploaded successfully');
+          // You can add code here to update the UI or perform additional actions
+        } else {
+          console.error('Image upload failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+
+    tags.forEach((tag) => {
+      // Sanitize the tag value (remove HTML and trim whitespace)
+      const sanitizedTag = tag.replace(/<[^>]*>/g, "").trim();
+
+      // Check if the sanitized tag is not empty before inserting it
+      if (sanitizedTag) {
+        fetch("http://localhost:3000/inserttags", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productid: productData.productid,
+            tag: sanitizedTag,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Server response for adding tag:", data);
+            if (data.success) {
+              // Tag added successfully
+            } else {
+              // Tag addition failed
+            }
+          })
+          .catch((error) => {
+            console.error("Error adding tag:", error);
+            // An error occurred while adding the tag
+          });
+      }
+    });
+
+    // check for completing wishlist and add notification if applicable
+    checkForWishedItmes();
+  });
+
+  function checkForWishedItmes() {
+    fetch(`/wisheditems`)
+      .then((response) => response.json())
+      .then((products) => {
+        products.forEach((product) => {
+          const id = product.userid;
+          const word = product.keyword;
+          //alert(word)
+          const nameh = document.getElementById("name").value;
+          const descriptionh = document.getElementById("description").value;
+          console.log(nameh, descriptionh, word);
+
+          if (nameh.toLowerCase().includes(word) || descriptionh.toLowerCase().includes(word)) {
+            row = {
+              userid: id,
+              message: `🔔Product on '${word}' is available`
+            };
+            console.log(word);
+
+            fetch("/setnotification", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(row),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log("Server response:", data);
+                if (data.success) {
+                } else {
+                }
+              })
+              .catch((error) => {
+                console.error("Error adding product:", error);
+              });
+
+
+          }
+        });
+        // Redirect or perform other actions as needed after adding the product and tags
+        window.location.href = './landingPage.html';
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }
+</script>
+
+</html>

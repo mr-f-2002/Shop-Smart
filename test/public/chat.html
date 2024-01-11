@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatpage</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.ani3d{
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.header{
+  width: 90%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px 5px 0;
+  margin: 5px;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header .logo{
+    width: 8%;
+    height: 65px;
+    background-color: #ff9602;
+    border-radius: 10px;
+}
+
+.header .logo img{
+    width: 90%;
+}
+
+.home{
+    color: #ff9602;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+}
+.home:hover{
+    padding-bottom: 2px;
+    border-bottom: 2px solid #ff9602;
+    cursor: pointer;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #fff;
+  margin-top: 20px;
+}
+.chat-box {
+  width: 80%;
+  min-width: 250px;
+  display: flex;
+}
+.col-1 {
+  flex: 1;
+  overflow-y: auto;
+  /* Add this property to enable vertical scrolling */
+}
+.col-2 {
+  flex-basis: 250px;
+  background: #5c4d363d;
+}
+.mssg-row {
+  /*sender text*/
+  margin: 5px;
+  width: 70%;
+  display: flex;
+  float: right;
+  justify-content: flex-end;
+  position: relative;
+}
+.other-mssg-row {
+  margin: 5px;
+  width: 70%;
+  display: flex;
+  float: left;
+}
+.mssg-row div {
+  /*sender text*/
+  background-color: #ff9602;
+  width: fit-content;
+  border-radius: 20px;
+}
+.other-mssg-row div {
+  background-color: #565656;
+  width: fit-content;
+  border-radius: 20px;
+}
+.mssg-text {
+  padding: 10px 40px;
+  border-radius: 8px;
+  width: 100%;
+  font-weight: 300;
+}
+.chat-form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+  .col-1 {
+    background-color: #3333337d;
+    /* min-height: 70vh; */
+    position: relative;
+    height: 80vh;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .col-1 input {
+    border: 0;
+    outline: none;
+    padding: 20px 40px;
+    background: #565656;
+    color: #fff;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 300;
+    height: 40px;
+    border-radius: 30px 0 0 30px;
+  }
+
+  .col-1 form {
+    position: absolute;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 5px;
+  }
+
+  ::placeholder {
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0;
+    /* Change the width of the scrollbar */
+  }
+
+  .col-2 {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .col-2 h3 {
+    text-align: center;
+    margin-top: 40px;
+    font-weight: 400;
+  }
+
+  .col-2 ul {
+    list-style: none;
+    padding: 30px;
+    align-items: center;
+  }
+
+  .col-2 ul li {
+    padding: 5px 0;
+  }
+
+  .col-2 ul li::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .col-2 ul li.online::before {
+    background-color: greenyellow;
+  }
+
+  .col-2 ul li.offline::before {
+    background-color: tomato;
+  }
+
+  .col-2 ul li.busy::before {
+    background-color: yellow;
+  }
+
+  .col-2 ul li:hover {
+    font-weight: bolder;
+    color: #ff9602;
+  }
+
+  #sendButton {
+    height: 40px;
+    background-color: #ff9602;
+    border: none;
+    color: white;
+    padding: 15px 20px;
+    cursor: pointer;
+    border-radius: 0 20px 20px 0;
+    transition: background-color 0.3s ease;
+  }
+
+  #sendButton:hover {
+    background-color: #d67e4f;
+  }
+
+  #chat-messages {
+    max-height: 70vh;
+    /* Add this property to limit the maximum height */
+    overflow-y: auto;
+    /* Add this property to enable vertical scrolling */
+  }
+</style>
+
+<body>
+  <video autoplay loop muted playsinline poster="" class="ani3d" id="bgVideo">
+    <source src="./images/cubeb.mp4" type="video/mp4" />
+  </video>
+  <div class="container">
+    <div class="header">
+      <a class="logo" href="landingPage.html">
+        <img src="./images/logo.png" alt="logo" />
+      </a>
+      <div class="menu">
+        <a class="home">Chat Page</a>
+      </div>
+    </div>
+    <div class="chat-box">
+      <div class="col-1">
+        <div id="chat-messages" class="chat-messages">
+          <!-- Chat messages will be displayed here -->
+        </div>
+        <form id="chat-form" class="chat-form">
+          <input type="text" id="messageInput" placeholder="Type your message..." />
+          <button type="submit" id="sendButton">Send</button>
+        </form>
+      </div>
+      <div class="col-2">
+        <h3>Recently Contacted</h3>
+        <ul id="recentlyContactedList" class="recently-contacted-list"></ul>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="./chatPage.js"></script>
+
+</html>
